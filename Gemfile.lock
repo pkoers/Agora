@@ -97,6 +97,8 @@ GEM
     debug (1.7.2)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    dockerfile-rails (1.2.5)
+      rails
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -108,6 +110,12 @@ GEM
       sassc (~> 2.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    griddler (1.5.2)
+      htmlentities
+      rails (>= 3.2.0)
+    griddler-postmark (1.0.0)
+      griddler
+    htmlentities (4.3.4)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
@@ -142,6 +150,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
+    nokogiri (1.14.2-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.2-x86_64-linux)
@@ -234,6 +244,7 @@ GEM
     zeitwerk (2.6.7)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-21
   x86_64-linux
 
@@ -242,8 +253,11 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  dockerfile-rails (>= 1.2)
   dotenv-rails
   font-awesome-sass (~> 6.1)
+  griddler
+  griddler-postmark
   jbuilder
   jsbundling-rails
   pg (~> 1.1)

@@ -1,7 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
-
+require_relative '../app/services/email_processor.rb'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
