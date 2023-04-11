@@ -13,8 +13,11 @@ class EmailProcessor
         lines = attachment_text.split("\n")
         lines.each do |line|
           if line.start_with?('AN')
-            registration_code = line[3,5]
-            puts registration_code
+            registration_code = line[3, 5]
+            if registration_code == 'DDROB'
+              pdfprocess(email)
+            end
+            # puts registration_code
             break
           end
         end
@@ -22,23 +25,24 @@ class EmailProcessor
     end
   end
 
-#  def process
-    # Check if email has attachments
-#    has_attachments = email.attachments.any?
+  def pdfprocess(email)
+    email.attachments.each do |attachment|
+      next unless attachment.content_type == 'text/plain'
 
-    # Print the name and first two lines of the first attachment (if there is one)
-#    if has_attachments && email.attachments.first.content_type =~ /^text\//
-#      attachment = email.attachments.first.read
-      # attachment_name = email.attachments.first.filename
-#      attachment_lines = attachment.lines.first(2)
+      file_name = File.basename(attachment.original_filename, '.*') # get name without extension
+      pdf_file = Tempfile.new([file_name, '.pdf']) # create PDF file with same name
 
- #     puts "Received email from #{email.from} with subject '#{email.subject}' and has_attachments? #{has_attachments}"
-      # puts "Attachment name: #{attachment_name}"
- #     puts "Attachment content (first 2 lines):\n#{attachment_lines.join}"
- #   else
- #     puts "Received email from #{email.from} with subject '#{email.subject}' and has_attachments? #{has_attachments}"
- #   end
- # end
+      Prawn::Document.generate(pdf_file.path) do
+        text attachment.read
+      end
+
+      # Do something with the PDF file, e.g. send it as an attachment
+      # email.attachments['converted_pdf.pdf'] = File.read(pdf_file.path)
+      # ...
+      puts 'Converted PDF'
+    end
+  end
+
 
   private
 
