@@ -15,7 +15,7 @@ class EmailProcessor
           if line.start_with?('AN')
             registration_code = line[3, 5]
             if registration_code == 'DDROB'
-              pdfprocess(email)
+              pdfprocess(attachment_text)
             end
             # puts registration_code
             break
@@ -25,24 +25,37 @@ class EmailProcessor
     end
   end
 
-  def pdfprocess(email)
-    email.attachments.each do |attachment|
-      next unless attachment.content_type == 'text/plain'
+  def pdfprocess(attachment_text)
+    # Store the text attachment in a temporary file
+    text_file = Tempfile.new('text_attachment')
+    text_file.write(attachment_text)
+    text_file.rewind
 
-      file_name = File.basename(attachment.original_filename, '.*') # get name without extension
-      pdf_file = Tempfile.new([file_name, '.pdf']) # create PDF file with same name
+    # Convert the text file to a PDF file and store it in another temporary file
+    file_name = 'converted_pdf' # Set a default file name
+    pdf_file = Tempfile.new([file_name, '.pdf']) # Create PDF file with the same name
 
-      Prawn::Document.generate(pdf_file.path) do
-        text attachment.read
-      end
-
-      # Do something with the PDF file, e.g. send it as an attachment
-      # email.attachments['converted_pdf.pdf'] = File.read(pdf_file.path)
-      # ...
-      puts 'Converted PDF'
+    Prawn::Document.generate(pdf_file.path) do
+      text File.read(text_file.path)
     end
+
+    # Attach the stored PDF file to the email and send it
+    SendMailer.send_email('pkoers75@gmail.com', file_name, File.read(pdf_file.path)).deliver_now
+
+    # Close and unlink the temporary files
+    text_file.close
+    text_file.unlink
+    pdf_file.close
+    pdf_file.unlink
+
+    puts 'Converted PDF'
   end
 
+
+
+ # def post(user)
+ #   SendMailer.send_email(user).deliver_now
+ # end
 
   private
 

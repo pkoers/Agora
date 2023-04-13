@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   mount_griddler('/email/incoming')
+
+  get '/post', to: 'pages#post'
+
 end

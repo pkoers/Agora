@@ -66,6 +66,11 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "inbound_mail_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :mailtrap
+
+  config.action_mailer.mailtrap_settings = {
+    mailtrap_api_key: ENV['MAILTRAP_API_KEY']
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
