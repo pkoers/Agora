@@ -9,12 +9,12 @@ class EmailProcessor
         attachment_text = attachment.read
         puts "Received email from #{email.from} with subject '#{email.subject}' and attachment '#{attachment.original_filename}'"
 
-        # Print the registration code from the first two lines of the attachment
+        # Read the registration code from the first two lines of the attachment
         lines = attachment_text.split("\n")
         lines.each do |line|
           if line.start_with?('AN')
             registration_code = line[3, 5]
-            if registration_code == 'DDROB'
+            if registration_code == 'DAFZA' || registration_code == 'DAPRI'
               pdfprocess(attachment_text)
             end
             # puts registration_code
@@ -32,15 +32,18 @@ class EmailProcessor
     text_file.rewind
 
     # Convert the text file to a PDF file and store it in another temporary file
-    file_name = 'converted_pdf' # Set a default file name
+    file_name = 'KLM Loadsheet' # Set a default file name
     pdf_file = Tempfile.new([file_name, '.pdf']) # Create PDF file with the same name
 
     Prawn::Document.generate(pdf_file.path) do
       text File.read(text_file.path)
     end
 
+    email_user = 'mail.alteafm.database@klm.com'
+    # email_user = 'pkoers75@gmail.com'
+
     # Attach the stored PDF file to the email and send it
-    SendMailer.send_email('pkoers75@gmail.com', file_name, File.read(pdf_file.path)).deliver_now
+    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path)).deliver_now
 
     # Close and unlink the temporary files
     text_file.close
@@ -48,7 +51,6 @@ class EmailProcessor
     pdf_file.close
     pdf_file.unlink
 
-    puts 'Converted PDF'
   end
 
 
