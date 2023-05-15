@@ -14,7 +14,8 @@ class EmailProcessor
         lines.each do |line|
           if line.start_with?('AN')
             registration_code = line[3, 5]
-            if registration_code == 'DAFZA' || registration_code == 'DAPRI'
+
+            if registration_code == 'DAZFA' || registration_code == 'DAPRI'
               pdfprocess(attachment_text)
             end
             # puts registration_code
