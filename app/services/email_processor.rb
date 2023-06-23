@@ -8,7 +8,9 @@ class EmailProcessor
       if attachment.content_type.start_with?('text/plain')
         attachment_text = attachment.read
         puts "Received email from #{email.from} with subject '#{email.subject}' and attachment '#{attachment.original_filename}'"
-
+        full_subject = "#{email.subject}"
+        # if the code does not work, remove the line below
+        puts full_subject.delete(' /')
         # Read the registration code from the first two lines of the attachment
         lines = attachment_text.split("\n")
         lines.each do |line|
