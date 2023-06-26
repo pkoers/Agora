@@ -10,7 +10,9 @@ class EmailProcessor
         puts "Received email from #{email.from} with subject '#{email.subject}' and attachment '#{attachment.original_filename}'"
         full_subject = "#{email.subject}"
         # if the code does not work, remove the line below
-        puts full_subject.gsub('/', '')
+        # puts full_subject.gsub('/', '')
+        puts "Origin #{full_subject[17, 3]}"
+        puts "Destination #{full_subject[20, 3]}"
         # Read the registration code from the first two lines of the attachment
         lines = attachment_text.split("\n")
         lines.each do |line|
@@ -18,7 +20,7 @@ class EmailProcessor
             registration_code = line[3, 5]
 
             if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
-              pdfprocess(attachment_text)
+              pdfprocess(attachment_text, full_subject.gsub('/', ''))
             end
             # puts registration_code
             break
@@ -28,14 +30,14 @@ class EmailProcessor
     end
   end
 
-  def pdfprocess(attachment_text)
+  def pdfprocess(attachment_text, file_name)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
     text_file.write(attachment_text)
     text_file.rewind
 
     # Convert the text file to a PDF file and store it in another temporary file
-    file_name = 'KLM Loadsheet' # Set a default file name
+    # file_name = 'KLM Loadsheet' # Set a default file name
     pdf_file = Tempfile.new([file_name, '.pdf']) # Create PDF file with the same name
 
     Prawn::Document.generate(pdf_file.path) do
