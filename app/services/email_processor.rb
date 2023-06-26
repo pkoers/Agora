@@ -10,14 +10,14 @@ class EmailProcessor
         puts "Received email from #{email.from} with subject '#{email.subject}' and attachment '#{attachment.original_filename}'"
         full_subject = "#{email.subject}"
         # if the code does not work, remove the line below
-        puts full_subject.delete(' /')
+        puts full_subject.gsub('/', '')
         # Read the registration code from the first two lines of the attachment
         lines = attachment_text.split("\n")
         lines.each do |line|
           if line.start_with?('AN')
             registration_code = line[3, 5]
 
-            if registration_code == 'DAZFA' || registration_code == 'DAPRI'
+            if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
               pdfprocess(attachment_text)
             end
             # puts registration_code
