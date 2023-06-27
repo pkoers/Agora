@@ -9,8 +9,7 @@ class EmailProcessor
         attachment_text = attachment.read
         puts "Received email from #{email.from} with subject '#{email.subject}' and attachment '#{attachment.original_filename}'"
         full_subject = "#{email.subject}"
-        # if the code does not work, remove the line below
-        # puts full_subject.gsub('/', '')
+        # reading the origin and destination
         puts "Origin #{full_subject[17, 3]}"
         puts "Destination #{full_subject[20, 3]}"
         # Read the registration code from the first two lines of the attachment
@@ -20,7 +19,7 @@ class EmailProcessor
             registration_code = line[3, 5]
 
             if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
-              pdfprocess(attachment_text, full_subject.gsub('/', ''))
+              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject)
             end
             # puts registration_code
             break
@@ -30,7 +29,7 @@ class EmailProcessor
     end
   end
 
-  def pdfprocess(attachment_text, file_name)
+  def pdfprocess(attachment_text, file_name, full_subject)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
     text_file.write(attachment_text)
@@ -48,7 +47,7 @@ class EmailProcessor
     # email_user = 'pkoers75@gmail.com'
 
     # Attach the stored PDF file to the email and send it
-    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path)).deliver_now
+    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path), full_subject).deliver_now
 
     # Close and unlink the temporary files
     text_file.close
