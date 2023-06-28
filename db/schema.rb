@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_27_190527) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_28_190851) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_190527) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "emails", force: :cascade do |t|
+    t.bigint "station_id", null: false
+    t.string "email_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["station_id"], name: "index_emails_on_station_id"
+  end
+
   create_table "registrations", force: :cascade do |t|
     t.string "registration"
     t.string "email_address"
@@ -58,6 +66,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_190527) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "stations", force: :cascade do |t|
+    t.string "iata_station_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "emails", "stations"
 end
