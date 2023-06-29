@@ -4,7 +4,7 @@
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.association :station %>
+    <%= f.association :station, collection: Station.pluck(:iata_station_code, :id) %>
     <%= f.input :email_address %>
   </div>
 

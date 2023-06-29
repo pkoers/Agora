@@ -8,3 +8,14 @@
 
   <%= button_to "Destroy this station", @station, method: :delete %>
 </div>
+
+<h2>Email Addresses</h2>
+
+<ul>
+  <% @station.emails.each do |email| %>
+    <li><%= email.email_address %></li>
+    <%= link_to "Edit this email", edit_email_path(email.id) %> |
+    <%= link_to "Delete this email", email_path(email.id), method: :delete, data: { confirm: 'Are you sure you want to delete this email address?' } %>
+
+  <% end %>
+</ul>
