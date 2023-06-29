@@ -1,0 +1,21 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @station %>
+
+<div>
+  <%= link_to "Edit this station", edit_station_path(@station) %> |
+  <%= link_to "Back to stations", stations_path %>
+
+  <%= button_to "Destroy this station", @station, method: :delete %>
+</div>
+
+<h2>Email Addresses</h2>
+
+<ul>
+  <% @station.emails.each do |email| %>
+    <li><%= email.email_address %></li>
+    <%= link_to "Edit this email", edit_email_path(email.id) %> |
+    <%= link_to "Delete this email", email_path(email.id), method: :delete, data: { confirm: 'Are you sure you want to delete this email address?' } %>
+
+  <% end %>
+</ul>

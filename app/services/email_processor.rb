@@ -11,6 +11,7 @@ class EmailProcessor
         full_subject = "#{email.subject}"
         # reading the origin and destination
         puts "Origin #{full_subject[17, 3]}"
+        origin = "#{full_subject[17, 3]}"
         puts "Destination #{full_subject[20, 3]}"
         # Read the registration code from the first two lines of the attachment
         lines = attachment_text.split("\n")
