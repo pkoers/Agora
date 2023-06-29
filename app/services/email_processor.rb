@@ -30,6 +30,9 @@ class EmailProcessor
     end
   end
 
+  def read_regos
+    # read the registrations from the registrations table and put them in an array
+  end
   def pdfprocess(attachment_text, file_name, full_subject)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
