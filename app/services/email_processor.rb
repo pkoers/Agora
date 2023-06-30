@@ -18,7 +18,12 @@ class EmailProcessor
         lines.each do |line|
           if line.start_with?('AN')
             registration_code = line[3, 5]
-
+            rego_email = read_regos(registration_code)
+            if rego_email == "UNK"
+              puts "Unknown Registration"
+            else
+              puts "Aircraft #{registration_code} email #{rego_email}"
+            end
             if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
               pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject)
             end
@@ -30,9 +35,14 @@ class EmailProcessor
     end
   end
 
-  def read_regos
-    # read the registrations from the registrations table and put them in an array
+  def read_regos(rego)
+    # look for a registration and return the associated email address
+    returned_rego = Registration.find_by(registration: rego)
+    # when no rego found in the table, return UNK otherwise return the rego
+    returned_rego.nil? ? returned_rego = "UNK" : returned_rego = returned_rego.email_address
+    return returned_rego
   end
+
   def pdfprocess(attachment_text, file_name, full_subject)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
