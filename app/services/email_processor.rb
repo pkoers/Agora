@@ -38,6 +38,8 @@ class EmailProcessor
 
   def station_array(origin)
     station = Station.find_by(iata_station_code: origin).id
+    # check whetner station = nil ifso set station to 99
+    station.nil? ? station = 99 : station
     output = Email.where(station_id: station).pluck(:email_address)
     # Add the addresses that always have to be used as a reply-to
     output << "ops@ops.de"
