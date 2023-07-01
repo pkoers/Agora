@@ -25,6 +25,7 @@ class EmailProcessor
               puts "Aircraft #{registration_code} email #{rego_email}"
             end
             if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
+              puts station_array(origin)
               pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject)
             end
             # puts registration_code
@@ -33,6 +34,16 @@ class EmailProcessor
         end
       end
     end
+  end
+
+  def station_array(origin)
+    station = Station.find_by(iata_station_code: origin).id
+    # check whetner station = nil ifso set station to 99
+    station.nil? ? station = 99 : station
+    output = Email.where(station_id: station).pluck(:email_address)
+    # Add the addresses that always have to be used as a reply-to
+    output << "ops@ops.de"
+    return output
   end
 
   def read_regos(rego)
