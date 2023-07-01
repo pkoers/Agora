@@ -35,6 +35,11 @@ class EmailProcessor
     end
   end
 
+  def station_array(origin)
+    station = Station.find_by(iata_station_code: origin).id
+    return Email.where(station_id: station).pluck(:email_address)
+  end
+
   def read_regos(rego)
     # look for a registration and return the associated email address
     returned_rego = Registration.find_by(registration: rego)
