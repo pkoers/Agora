@@ -36,6 +36,8 @@ class EmailProcessor
     end
   end
 
+  # origin is the iata station code found in the inbound email
+  # this def searches the table for the reply-to email adresses
   def station_array(origin)
     station = Station.find_by(iata_station_code: origin).try(:id)
     # station 99999 is assigned when the station is not known in the table
@@ -46,6 +48,7 @@ class EmailProcessor
     return output
   end
 
+  # rego is the registration of the aircraft
   def read_regos(rego)
     # look for a registration and return the associated email address
     returned_rego = Registration.find_by(registration: rego)
