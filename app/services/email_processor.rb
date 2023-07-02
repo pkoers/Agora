@@ -19,16 +19,17 @@ class EmailProcessor
           if line.start_with?('AN')
             registration_code = line[3, 5]
             rego_email = read_regos(registration_code)
-            if rego_email == "UNK"
-              puts "Unknown Registration"
-            else
-              puts "Aircraft #{registration_code} email #{rego_email}"
-            end
-            if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
+            if rego_email != "UNK"
               puts station_array(origin)
-              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject)
+              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject, rego_email)
+            else
+              puts "Unknown Aircraft #{registration_code}"
             end
-            # puts registration_code
+
+            # if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
+            #   puts station_array(origin)
+            #   pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject)
+            # end
             break
           end
         end
@@ -36,6 +37,8 @@ class EmailProcessor
     end
   end
 
+  # origin is the iata station code found in the inbound email
+  # this def searches the table for the reply-to email adresses
   def station_array(origin)
     station = Station.find_by(iata_station_code: origin).try(:id)
     # station 99999 is assigned when the station is not known in the table
@@ -46,6 +49,7 @@ class EmailProcessor
     return output
   end
 
+  # rego is the registration of the aircraft
   def read_regos(rego)
     # look for a registration and return the associated email address
     returned_rego = Registration.find_by(registration: rego)
@@ -54,7 +58,7 @@ class EmailProcessor
     return returned_rego
   end
 
-  def pdfprocess(attachment_text, file_name, full_subject)
+  def pdfprocess(attachment_text, file_name, full_subject, email_user)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
     text_file.write(attachment_text)
@@ -68,7 +72,7 @@ class EmailProcessor
       text File.read(text_file.path)
     end
 
-    email_user = 'mail.alteafm.database@klm.com'
+    # email_user = 'mail.alteafm.database@klm.com'
     # email_user = 'pkoers75@gmail.com'
 
     # Attach the stored PDF file to the email and send it
