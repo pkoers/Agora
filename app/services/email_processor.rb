@@ -37,9 +37,9 @@ class EmailProcessor
   end
 
   def station_array(origin)
-    station = Station.find_by(iata_station_code: origin).id
-    # check whetner station = nil ifso set station to 99
-    station.nil? ? station = 99 : station
+    station = Station.find_by(iata_station_code: origin).try(:id)
+    # station 99999 is assigned when the station is not known in the table
+    station ||= 99999
     output = Email.where(station_id: station).pluck(:email_address)
     # Add the addresses that always have to be used as a reply-to
     output << "ops@ops.de"
