@@ -73,7 +73,6 @@ class EmailProcessor
     end
 
     # email_user = 'mail.alteafm.database@klm.com'
-    # email_user = 'pkoers75@gmail.com'
 
     # Attach the stored PDF file to the email and send it
     SendMailer.send_email(email_user, file_name, File.read(pdf_file.path), full_subject).deliver_now
