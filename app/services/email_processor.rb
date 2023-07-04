@@ -20,8 +20,8 @@ class EmailProcessor
             registration_code = line[3, 5]
             rego_email = read_regos(registration_code)
             if rego_email != "UNK"
-              puts station_array(origin)
-              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject, rego_email)
+              replyto = station_array(origin).join(", ")
+              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject, rego_email, replyto)
             else
               puts "Unknown Aircraft #{registration_code}"
             end
@@ -58,7 +58,7 @@ class EmailProcessor
     return returned_rego
   end
 
-  def pdfprocess(attachment_text, file_name, full_subject, email_user)
+  def pdfprocess(attachment_text, file_name, full_subject, email_user, replyto)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
     text_file.write(attachment_text)
@@ -73,10 +73,9 @@ class EmailProcessor
     end
 
     # email_user = 'mail.alteafm.database@klm.com'
-    # email_user = 'pkoers75@gmail.com'
 
     # Attach the stored PDF file to the email and send it
-    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path), full_subject).deliver_now
+    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path), full_subject, replyto).deliver_now
 
     # Close and unlink the temporary files
     text_file.close
