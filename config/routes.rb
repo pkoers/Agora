@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :system_alerts
   resources :emails
   resources :stations
   resources :registrations

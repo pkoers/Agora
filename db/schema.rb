@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_28_190851) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_06_204210) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_190851) do
 
   create_table "stations", force: :cascade do |t|
     t.string "iata_station_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "system_alerts", force: :cascade do |t|
+    t.integer "alert_id"
+    t.string "alert_content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
