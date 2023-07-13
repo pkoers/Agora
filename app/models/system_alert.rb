@@ -1,0 +1,2 @@
+class SystemAlert < ApplicationRecord
+end

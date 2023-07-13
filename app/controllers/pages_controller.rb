@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   def home
+    @system_alerts = SystemAlert.all
   end
 
   def post
