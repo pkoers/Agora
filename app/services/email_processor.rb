@@ -9,10 +9,11 @@ class EmailProcessor
         attachment_text = attachment.read
         puts "Received email from #{email.from} with subject '#{email.subject}' and attachment '#{attachment.original_filename}'"
         full_subject = "#{email.subject}"
+        add = check_flightnumber_length("#{full_subject[2,4]}".to_i)
         # reading the origin and destination
-        puts "Origin #{full_subject[17, 3]}"
-        origin = "#{full_subject[17, 3]}"
-        puts "Destination #{full_subject[20, 3]}"
+        puts "Origin #{full_subject[17 + add, 3]}"
+        origin = "#{full_subject[17 + add, 3]}"
+        puts "Destination #{full_subject[20 + add, 3]}"
         # Read the registration code from the first two lines of the attachment
         lines = attachment_text.split("\n")
         lines.each do |line|
@@ -35,6 +36,12 @@ class EmailProcessor
         end
       end
     end
+  end
+
+  # Check the length of the flight number, if less then 1000 return -1 else return 0
+  def check_flightnumber_length(check)
+    check < 1000 ? i = -1 : i = 0
+    return i
   end
 
   # origin is the iata station code found in the inbound email
