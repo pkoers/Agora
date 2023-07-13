@@ -1,7 +1,7 @@
 <h1>Agora</h1>
 <div id="alerts">
-  <% @station_alerts.each do |alert| %>
-    <% alert.alert_content.nil? ? No Alerts : alert.alert_content %>
+  <% @system_alerts.each do |alert| %>
+    Status: <%= alert.alert_content %>
   <% end %>
 </div>
 <%= link_to 'Registrations', registrations_path %>
