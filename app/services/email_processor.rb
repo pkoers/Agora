@@ -45,7 +45,7 @@ class EmailProcessor
     station ||= 99999
     output = Email.where(station_id: station).pluck(:email_address)
     # Add the addresses that always have to be used as a reply-to
-    output << "ops@ops.de"
+    output << "andreas.kornatz@germanairways.com"
     return output
   end
 
