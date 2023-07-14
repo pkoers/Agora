@@ -7,7 +7,17 @@
 <div id="alerts">
 <h3>System Alerts</h3>
   <% @system_alerts.each do |alert| %>
-    @ <%= alert.created_at%> [<%= alert.alert_id%>] <%= alert.alert_content %>
-    <br>
+
+    <% css_class = if alert.alert_id < 2000
+                   "alert alert-success"
+                 elsif alert.alert_id > 1999 && alert.alert_id < 3000
+                   "alert alert-warning"
+                 else
+                   "alert alert-danger"
+                 end %>
+
+    <div class="<%= css_class %>" role="alert">
+      @ <%= alert.created_at%> [<%= alert.alert_id%>] <%= alert.alert_content %>
+    </div>
   <% end %>
 </div>
