@@ -38,6 +38,14 @@ class EmailProcessor
     end
   end
 
+  # Enter an entry in the System Alert log (Alert ID, Content)
+  def log_alert(alert_id, alert_content)
+    alert = SystemAlert.new
+    alert.alert_id = alert_id
+    alert.alert_content = alert_content
+    alert.save
+  end
+
   # Check the length of the flight number, if less then 1000 return -1 else return 0
   def check_flightnumber_length(check)
     check < 1000 ? i = -1 : i = 0
@@ -50,6 +58,8 @@ class EmailProcessor
     station = Station.find_by(iata_station_code: origin).try(:id)
     # station 99999 is assigned when the station is not known in the table
     station ||= 99999
+    # add alert in the system alerts log when station == 99999
+    log_alert(2001, "#{origin} not defined") if station == 99999
     output = Email.where(station_id: station).pluck(:email_address)
     # Add the addresses that always have to be used as a reply-to
     output << "andreas.kornatz@germanairways.com"
