@@ -8,6 +8,6 @@
 <h3>System Alerts</h3>
   <% @system_alerts.each do |alert| %>
     @ <%= alert.created_at%> [<%= alert.alert_id%>] <%= alert.alert_content %>
-
+    <br>
   <% end %>
 </div>
