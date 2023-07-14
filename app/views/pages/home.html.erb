@@ -1,9 +1,13 @@
 <h1>Agora</h1>
-<div id="alerts">
-  <% @system_alerts.each do |alert| %>
-    Status: <%= alert.alert_content %>
-  <% end %>
-</div>
+
 <%= link_to 'Registrations', registrations_path %>
 <%= link_to 'Emails', emails_path %>
 <%= link_to 'Stations', stations_path %>
+
+<div id="alerts">
+<h3>System Alerts (display not switched on yet)</h3>
+  <%# @system_alerts.each do |alert| %>
+    @ <%#= alert.created_at%> [<%#= alert.alert_id%>] <%#= alert.alert_content %>
+
+  <%# end %>
+</div>
