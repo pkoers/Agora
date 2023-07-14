@@ -5,9 +5,9 @@
 <%= link_to 'Stations', stations_path %>
 
 <div id="alerts">
-<h3>System Alerts (display not switched on yet)</h3>
-  <%# @system_alerts.each do |alert| %>
-    @ <%#= alert.created_at%> [<%#= alert.alert_id%>] <%#= alert.alert_content %>
+<h3>System Alerts</h3>
+  <% @system_alerts.each do |alert| %>
+    @ <%= alert.created_at%> [<%= alert.alert_id%>] <%= alert.alert_content %>
 
-  <%# end %>
+  <% end %>
 </div>
