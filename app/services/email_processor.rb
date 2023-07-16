@@ -27,10 +27,6 @@ class EmailProcessor
               puts "Unknown Aircraft #{registration_code}"
             end
 
-            # if registration_code == 'DAZFA' || registration_code == 'DAPRI' || registration_code == 'DAGMP'
-            #   puts station_array(origin)
-            #   pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject)
-            # end
             break
           end
         end
@@ -72,6 +68,8 @@ class EmailProcessor
     returned_rego = Registration.find_by(registration: rego)
     # when no rego found in the table, return UNK otherwise return the rego
     returned_rego.nil? ? returned_rego = "UNK" : returned_rego = returned_rego.email_address
+    # add alert in the system alerts log when returned_rego == UNK
+    log_alert(3001, "Unknown Registration received #{rego}") if returned_rego == "UNK"
     return returned_rego
   end
 
@@ -99,10 +97,7 @@ class EmailProcessor
     text_file.unlink
     pdf_file.close
     pdf_file.unlink
-
   end
-
-
 
  # def post(user)
  #   SendMailer.send_email(user).deliver_now
