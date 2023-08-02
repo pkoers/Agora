@@ -49,10 +49,11 @@ class SystemAlertsController < ApplicationController
 
   # DELETE /system_alerts/1 or /system_alerts/1.json
   def destroy
-    @system_alert.destroy
+    # @system_alert.destroy
+    SystemAlert.destroy_all
 
     respond_to do |format|
-      format.html { redirect_to system_alerts_url, notice: "System alert was successfully destroyed." }
+      format.html { redirect_to system_alerts_url, notice: "System alerts were successfully destroyed." }
       format.json { head :no_content }
     end
   end
