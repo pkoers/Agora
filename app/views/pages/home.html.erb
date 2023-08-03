@@ -21,3 +21,7 @@
     </div>
   <% end %>
 </div>
+
+<div>
+  <%= button_to 'Remove all log entries and reset the log', destroy_all_system_alerts_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+</div>

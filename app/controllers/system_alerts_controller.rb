@@ -1,5 +1,5 @@
 class SystemAlertsController < ApplicationController
-  before_action :set_system_alert, only: %i[ show edit update destroy ]
+  # before_action :set_system_alert, only: %i[show edit update], unless: :destroy_all?, except: :destroy_all
 
   # GET /system_alerts or /system_alerts.json
   def index
@@ -8,6 +8,8 @@ class SystemAlertsController < ApplicationController
 
   # GET /system_alerts/1 or /system_alerts/1.json
   def show
+    # set_system_alert
+    redirect_to root_path
   end
 
   # GET /system_alerts/new
@@ -52,13 +54,20 @@ class SystemAlertsController < ApplicationController
     # @system_alert.destroy
     SystemAlert.destroy_all
 
-    respond_to do |format|
-      format.html { redirect_to system_alerts_url, notice: "System alerts were successfully destroyed." }
-      format.json { head :no_content }
-    end
+    # respond_to do |format|
+    # redirect_to root_path
+      # format.json { head :no_content }
+    # end
+    log_alert(1001, "System Alerts Log Reset")
+    redirect_to root_path
+  end
+
+  def destroy_all?
+    action_name == 'destroy_all'
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_system_alert
       @system_alert = SystemAlert.find(params[:id])
@@ -67,5 +76,12 @@ class SystemAlertsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def system_alert_params
       params.require(:system_alert).permit(:alert_id, :alert_content)
+    end
+
+    def log_alert(alert_id, alert_content)
+      alert = SystemAlert.new
+      alert.alert_id = alert_id
+      alert.alert_content = alert_content
+      alert.save
     end
 end
