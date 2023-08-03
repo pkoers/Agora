@@ -12,4 +12,5 @@ Rails.application.routes.draw do
 
   get '/post', to: 'pages#post'
 
+  delete 'system_alerts/destroy_all', to: 'system_alerts#destroy_all', as: :destroy_all_system_alerts
 end
