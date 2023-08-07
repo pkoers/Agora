@@ -58,7 +58,7 @@ class EmailProcessor
     log_alert(2001, "#{origin} not defined") if station == 99999
     output = Email.where(station_id: station).pluck(:email_address)
     # Add the addresses that always have to be used as a reply-to
-    output << "andreas.kornatz@germanairways.com"
+    output << "loadsheet@germanairways.com"
     return output
   end
 
