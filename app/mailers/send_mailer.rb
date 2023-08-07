@@ -7,9 +7,9 @@ class SendMailer < ApplicationMailer
 
     puts 'Sending email'
     mail(to: user, from: 'loadsheet@mixty.com', subject: full_subject, reply_to: replyto) do |format|
-      format.text { render plain: 'This is an automated e-mail from Altea Flight Management.
-        NOT FOR OPERATIONAL USE - TEST
-        Please do not reply.
+      format.text { render plain: 'This is an automated e-mail from Altea Flight Management & Agora.
+        Do not forget to validate and sign the Load Sheet with your 3-letter-code and signature!
+        Please use Reply-All to automatically send the signed Load Sheet to all applicable departments.
         ' }
     end
   end
