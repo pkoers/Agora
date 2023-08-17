@@ -20,9 +20,10 @@ class EmailProcessor
           if line.start_with?('AN')
             registration_code = line[3, 5]
             rego_email = read_regos(registration_code)
+            from_domain = select_sender(registration_code)
             if rego_email != "UNK"
               replyto = station_array(origin).join(", ")
-              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject, rego_email, replyto)
+              pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject, rego_email, replyto, from_domain)
             else
               puts "Unknown Aircraft #{registration_code}"
             end
@@ -46,6 +47,11 @@ class EmailProcessor
   def check_flightnumber_length(check)
     check < 1000 ? i = -1 : i = 0
     return i
+  end
+
+  # Because of implementing a new outbound email domain, we need to set the correct sender
+  def select_sender(rego)
+    return "loadsheet@mixty.com"
   end
 
   # origin is the iata station code found in the inbound email
@@ -73,7 +79,7 @@ class EmailProcessor
     return returned_rego
   end
 
-  def pdfprocess(attachment_text, file_name, full_subject, email_user, replyto)
+  def pdfprocess(attachment_text, file_name, full_subject, email_user, replyto, from_domain)
     # Store the text attachment in a temporary file
     text_file = Tempfile.new('text_attachment')
     text_file.write(attachment_text)
@@ -90,7 +96,7 @@ class EmailProcessor
     # email_user = 'mail.alteafm.database@klm.com'
 
     # Attach the stored PDF file to the email and send it
-    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path), full_subject, replyto).deliver_now
+    SendMailer.send_email(email_user, file_name, File.read(pdf_file.path), full_subject, replyto, from_domain).deliver_now
 
     # Close and unlink the temporary files
     text_file.close
