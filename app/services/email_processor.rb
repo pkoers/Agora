@@ -51,7 +51,12 @@ class EmailProcessor
 
   # Because of implementing a new outbound email domain, we need to set the correct sender
   def select_sender(rego)
-    return "loadsheet@mixty.com"
+    if rego == "PHXXX"
+      return_from = "loadsheet@datatechground.com"
+    else
+      return_from = "loadsheet@mixty.com"
+    end
+    return return_from
   end
 
   # origin is the iata station code found in the inbound email
