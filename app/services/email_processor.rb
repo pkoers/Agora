@@ -52,9 +52,9 @@ class EmailProcessor
   # Because of implementing a new outbound email domain, we need to set the correct sender
   def select_sender(rego)
     if rego == "PHXXX"
-      return_from = "loadsheet@datatechground.com"
-    else
       return_from = "loadsheet@mixty.com"
+    else
+      return_from = "loadsheet@datatechground.com"
     end
     return return_from
   end
