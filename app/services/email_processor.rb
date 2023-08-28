@@ -75,8 +75,9 @@ class EmailProcessor
 
   # rego is the registration of the aircraft
   def read_regos(rego)
-    # look for a registration and return the associated email address
-    returned_rego = Registration.find_by(registration: rego)
+    # look for a Aircraft and return the associated email address
+    # returned_rego = Registration.find_by(registration: rego) -> Issue #44
+    returned_rego = Aircraft.find_by(aircraft: rego)
     # when no rego found in the table, return UNK otherwise return the rego
     returned_rego.nil? ? returned_rego = "UNK" : returned_rego = returned_rego.email_address
     # add alert in the system alerts log when returned_rego == UNK
