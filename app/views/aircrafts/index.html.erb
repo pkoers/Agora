@@ -2,13 +2,21 @@
 
 <h1>Aircrafts</h1>
 
-<div id="aircrafts">
-  <% @aircrafts.each do |aircraft| %>
-    <%= render aircraft %>
-    <p>
-      <%= link_to "Show this aircraft", aircraft %>
-    </p>
-  <% end %>
-</div>
+<% admin = Administrator.find_by user_id: current_user %>
+<% if current_user && admin.trusted? %>
+  <!-- Display content for trusted users -->
 
-<%= link_to "New aircraft", new_aircraft_path %>
+  <div id="aircrafts">
+    <% @aircrafts.each do |aircraft| %>
+      <%= render aircraft %>
+      <p>
+        <%= link_to "Show this aircraft", aircraft %>
+      </p>
+    <% end %>
+  </div>
+
+  <%= link_to "New aircraft", new_aircraft_path %>
+<% else %>
+  <!-- Display content for non-trusted users or non-logged-in users -->
+  <p>Not Authorised</p>
+<% end %>

@@ -2,13 +2,21 @@
 
 <h1>Stations</h1>
 
-<div id="stations">
-  <% @stations.each do |station| %>
-    <%= render station %>
-    <p>
-      <%= link_to "Show this station", station %>
-    </p>
-  <% end %>
-</div>
+<% admin = Administrator.find_by user_id: current_user %>
+<% if current_user && admin.trusted? %>
+  <!-- Display content for trusted users -->
 
-<%= link_to "New station", new_station_path %>
+  <div id="stations">
+    <% @stations.each do |station| %>
+      <%= render station %>
+      <p>
+        <%= link_to "Show this station", station %>
+      </p>
+    <% end %>
+  </div>
+
+  <%= link_to "New station", new_station_path %>
+<% else %>
+  <!-- Display content for non-trusted users or non-logged-in users -->
+  <p>Not Authorised</p>
+<% end %>
