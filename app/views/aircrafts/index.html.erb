@@ -3,7 +3,12 @@
 <h1>Aircrafts</h1>
 
 <% admin = Administrator.find_by user_id: current_user %>
-<% if current_user && admin.trusted? %>
+
+<% if admin.nil? %>
+
+    <p>Not Authorised</p>
+
+<% elsif current_user && admin.trusted? %>
   <!-- Display content for trusted users -->
 
   <div id="aircrafts">
