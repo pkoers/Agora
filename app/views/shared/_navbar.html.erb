@@ -25,8 +25,10 @@
             <%= image_tag "https://cdn1.iconfinder.com/data/icons/heroicons-ui/24/menu-1024.png", class: "avatar", alt: "dropdown menu" %>
           </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%# = link_to "Action", "#", class: "dropdown-item" %>
-              <%# = link_to "Another action", "#", class: "dropdown-item" %>
+              <%= link_to 'Aircrafts', aircrafts_path, class: "dropdown-item" %>
+              <%= link_to 'Emails', emails_path, class: "dropdown-item" %>
+              <%= link_to 'Stations', stations_path, class: "dropdown-item" %>
+              <%= link_to 'Users', administrators_path, class: "dropdown-item" %>
               <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
             </div>
           </li>
