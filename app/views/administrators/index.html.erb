@@ -2,13 +2,27 @@
 
 <h1>Administrators</h1>
 
-<div id="administrators">
-  <% @administrators.each do |administrator| %>
-    <%= render administrator %>
-    <p>
-      <%= link_to "Show this administrator", administrator %>
-    </p>
-  <% end %>
-</div>
+<% admin = Administrator.find_by user_id: current_user %>
 
-<%= link_to "New administrator", new_administrator_path %>
+<% if admin.nil? %>
+
+    <p>Not Authorised</p>
+
+<% elsif current_user && admin.trusted? %>
+  <!-- Display content for trusted users -->
+
+  <div id="administrators">
+    <% @administrators.each do |administrator| %>
+      <%= render administrator %>
+      <p>
+        <%= link_to "Show this administrator", administrator %>
+      </p>
+    <% end %>
+  </div>
+
+  <%= link_to "New administrator", new_administrator_path %>
+
+<% else %>
+  <!-- Display content for non-trusted users or non-logged-in users -->
+  <p>Not Authorised</p>
+<% end %>
