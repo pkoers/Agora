@@ -19,6 +19,18 @@
   <% end %>
 </div>
 
-<div>
-  <%= button_to 'Remove all log entries and reset the log', destroy_all_system_alerts_path, method: :delete, data: { confirm: 'Are you sure?' } %>
-</div>
+<% admin = Administrator.find_by user_id: current_user %>
+
+<% if admin.nil? %>
+
+    <p> </p>
+
+<% elsif current_user && admin.trusted? %>
+  <!-- Display content for trusted users -->
+  <div>
+    <%= button_to 'Remove all log entries and reset the log', destroy_all_system_alerts_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+  </div>
+<% else %>
+  <!-- Display content for non-trusted users or non-logged-in users -->
+  <p> </p>
+<% end %>
