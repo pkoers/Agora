@@ -25,35 +25,6 @@ class SystemAlertsController < ApplicationController
   def create
     @system_alert = SystemAlert.new(system_alert_params)
 
-    # Define the Slack URL to send the POST request to
-    url = URI.parse('https://hooks.slack.com/triggers/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')
-
-     # Create a hash representing the JSON payload to send to Slack
-     payload = {
-      "Notification" => "[#{@system_alert.alert_id}] #{@system_alert.alert_content}"
-    }
-    # Convert the hash to JSON format
-    json_payload = payload.to_json
-    # Create a new HTTP POST request
-    request = Net::HTTP::Post.new(url.path)
-    # Set the request headers to indicate that you are sending JSON data
-    request.content_type = 'application/json'
-    request['Accept'] = 'application/json'
-    # Set the request body to the JSON payload
-    request.body = json_payload
-    # Create an HTTP object and send the request
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = (url.scheme == 'https')
-    response = http.request(request)
-    # Check the response
-    if response.code == '200'
-      # Successful response
-      puts "Response: #{response.body}"
-    else
-      # Handle error
-      puts "Error: #{response.code} - #{response.message}"
-    end
-
     respond_to do |format|
       if @system_alert.save
         format.html { redirect_to system_alert_url(@system_alert), notice: "System alert was successfully created." }
