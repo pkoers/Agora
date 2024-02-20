@@ -1,0 +1,27 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Owners</h1>
+
+<% admin = Administrator.find_by user_id: current_user %>
+
+<% if admin.nil? %>
+
+    <p>Not Authorised</p>
+
+<% elsif current_user && admin.trusted? %>
+  <!-- Display content for trusted users -->
+
+  <div id="owners">
+    <% @owners.each do |owner| %>
+      <%= render owner %>
+      <p>
+        <%= link_to "Show this owner", owner %>
+      </p>
+    <% end %>
+  </div>
+
+  <%= link_to "New owner", new_owner_path %>
+<% else %>
+  <!-- Display content for non-trusted users or non-logged-in users -->
+  <p>Not Authorised</p>
+<% end %>
