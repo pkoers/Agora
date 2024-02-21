@@ -49,11 +49,18 @@ class StationsController < ApplicationController
 
   # DELETE /stations/1 or /stations/1.json
   def destroy
-    @station.destroy
+    if @station.email_ids.count > 0
+      respond_to do |format|
+        format.html { redirect_to stations_url, notice: "Station has email addresses defined, remove them first." }
+        format.json { head :no_content }
+      end
+    else
+      @station.destroy
 
-    respond_to do |format|
-      format.html { redirect_to stations_url, notice: "Station was successfully destroyed." }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.html { redirect_to stations_url, notice: "Station was successfully destroyed." }
+        format.json { head :no_content }
+      end
     end
   end
 

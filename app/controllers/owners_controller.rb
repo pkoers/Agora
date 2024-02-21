@@ -42,11 +42,18 @@ class OwnersController < ApplicationController
   end
 
   def destroy
-    @owner.destroy
+    if @owner.aircrafts.count > 0
+      respond_to do |format|
+        format.html { redirect_to owners_url, notice: "Owner has aircraft defined, remove them first." }
+        format.json { head :no_content }
+      end
+    else
+      @owner.destroy
 
-    respond_to do |format|
-      format.html { redirect_to owners_url, notice: "Owner was successfully removed." }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.html { redirect_to owners_url, notice: "Owner was successfully removed." }
+        format.json { head :no_content }
+      end
     end
   end
 

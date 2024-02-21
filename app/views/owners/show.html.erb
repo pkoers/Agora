@@ -6,9 +6,9 @@
   <%= link_to "Edit this owner", edit_owner_path(@owner) %> |
   <%= link_to "Back to owners", owners_path %>
 
-  <%= button_to "Remove this owner", @owner, method: :delete %>
+  <%= button_to "Remove this owner", @owner, method: :delete %><strong>Owners with Aircraft assigned can not be removed!</strong>
 </div>
-
+<br>
 <h2>Aircraft Registrations</h2>
 
 <ul>
