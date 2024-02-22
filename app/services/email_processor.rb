@@ -103,6 +103,15 @@ class EmailProcessor
     return output
   end
 
+  # rego is the registration of the aircraft, used to find the owner
+  def read_owner(rego)
+    #look for the email address of the aircraft owner
+    aircraft = Aircraft.find_by(aircraft: rego)
+    # set the email address of the aircraft owner
+    owner = aircraft.owner.email_address
+    return owner
+  end
+
   # rego is the registration of the aircraft
   def read_regos(rego)
     # look for a Aircraft and return the associated email address
