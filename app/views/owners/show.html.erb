@@ -1,0 +1,21 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @owner %>
+
+<div>
+  <%= link_to "Edit this owner", edit_owner_path(@owner) %> |
+  <%= link_to "Back to owners", owners_path %>
+
+  <%= button_to "Remove this owner", @owner, method: :delete %><strong>Owners with Aircraft assigned can not be removed!</strong>
+</div>
+<br>
+<h2>Aircraft Registrations</h2>
+
+<ul>
+  <% @owner.aircrafts.each do |aircraft| %>
+    <li><%= aircraft.aircraft %></li>
+    <%= link_to "Edit this aircraft", edit_aircraft_path(aircraft.id) %> |
+    <%= link_to "Delete this aircraft", aircraft_path(aircraft.id), method: :delete, data: { confirm: 'Are you sure you want to delete this aircraft?' } %>
+
+  <% end %>
+</ul>

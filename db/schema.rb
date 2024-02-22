@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_03_212918) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_20_154727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_03_212918) do
     t.string "email_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "owner_id"
+    t.index ["owner_id"], name: "index_aircrafts_on_owner_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -72,6 +74,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_03_212918) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["station_id"], name: "index_emails_on_station_id"
+  end
+
+  create_table "owners", force: :cascade do |t|
+    t.string "name"
+    t.string "email_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "stations", force: :cascade do |t|
@@ -102,5 +111,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_03_212918) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "administrators", "users"
+  add_foreign_key "aircrafts", "owners"
   add_foreign_key "emails", "stations"
 end
