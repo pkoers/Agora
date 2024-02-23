@@ -101,6 +101,7 @@ class EmailProcessor
     # Add the addresses that always have to be used as a reply-to
     # output << "loadsheet@germanairways.com"
     if read_owner(rego) == "UNK"
+      log_alert(2002,"#{rego} does not have an owner")
       return output
     else
       output << read_owner(rego)
