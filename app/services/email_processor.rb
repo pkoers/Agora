@@ -22,7 +22,7 @@ class EmailProcessor
             rego_email = read_regos(registration_code)
             from_domain = select_sender(registration_code)
             if rego_email != "UNK"
-              replyto = station_array(origin).join(", ")
+              replyto = station_array(origin, registration_code).join(", ")
               pdfprocess(attachment_text, full_subject.gsub('/', ''), full_subject, rego_email, replyto, from_domain)
             else
               puts "Unknown Aircraft #{registration_code}"
@@ -91,7 +91,7 @@ class EmailProcessor
 
   # origin is the iata station code found in the inbound email
   # this def searches the table for the reply-to email adresses
-  def station_array(origin)
+  def station_array(origin, rego)
     station = Station.find_by(iata_station_code: origin).try(:id)
     # station 99999 is assigned when the station is not known in the table
     station ||= 99999
@@ -99,8 +99,23 @@ class EmailProcessor
     log_alert(2001, "#{origin} not defined") if station == 99999
     output = Email.where(station_id: station).pluck(:email_address)
     # Add the addresses that always have to be used as a reply-to
-    output << "loadsheet@germanairways.com"
-    return output
+    # output << "loadsheet@germanairways.com"
+    if read_owner(rego) == "UNK"
+      return output
+    else
+      output << read_owner(rego)
+      return output
+    end
+  end
+
+  # rego is the registration of the aircraft, used to find the owner
+  def read_owner(rego)
+    #look for the email address of the aircraft owner
+    aircraft = Aircraft.find_by(aircraft: rego)
+    # set the email address of the aircraft owner
+    # owner = aircraft.owner.email_address
+    aircraft.owner_id.nil? ? owner = "UNK" : owner = aircraft.owner.email_address
+    return owner
   end
 
   # rego is the registration of the aircraft
