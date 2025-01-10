@@ -160,7 +160,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.9)
+    nio4r (2.7.4)
     nokogiri (1.14.2-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.14.2-arm64-darwin)
@@ -174,7 +174,7 @@ GEM
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
     public_suffix (5.0.1)
-    puma (5.6.5)
+    puma (6.5.0)
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.4)
@@ -213,7 +213,7 @@ GEM
     responders (3.1.0)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.2.5)
+    rexml (3.4.0)
     rubyzip (2.3.2)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -247,7 +247,7 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uri (0.12.0)
+    uri (1.0.2)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -291,7 +291,7 @@ DEPENDENCIES
   net-http
   pg (~> 1.1)
   prawn
-  puma (~> 5.0)
+  puma (>= 5.6.9)
   rails (~> 7.0.4, >= 7.0.4.2)
   sassc-rails
   selenium-webdriver
